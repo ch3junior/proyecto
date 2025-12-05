@@ -1,0 +1,34 @@
+-- 02_empleados.sql
+USE rrhh_permisos;
+
+CREATE TABLE IF NOT EXISTS empleados (
+    empleado_id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    departamento_id INT NULL,
+    cargo_id INT NULL,
+    fecha_ingreso DATE NOT NULL,
+    dias_vacaciones_totales INT NOT NULL DEFAULT 12,
+    dias_vacaciones_usados INT NOT NULL DEFAULT 0,
+    estado VARCHAR(20) NOT NULL DEFAULT 'activo',
+
+    CONSTRAINT fk_empleado_departamento
+        FOREIGN KEY (departamento_id) REFERENCES departamentos(departamento_id)
+        ON DELETE SET NULL,
+    CONSTRAINT fk_empleado_cargo
+        FOREIGN KEY (cargo_id) REFERENCES cargos(cargo_id)
+        ON DELETE SET NULL
+);
+
+-- Opcional: datos de ejemplo
+INSERT IGNORE INTO empleados (nombre, apellido, departamento_id, cargo_id, fecha_ingreso)
+VALUES
+('Joel', 'Gonzalez', (SELECT departamento_id FROM departamentos WHERE nombre='Sistemas' LIMIT 1),
+                 (SELECT cargo_id FROM cargos WHERE nombre='Analista' LIMIT 1),
+                 '2022-03-10'),
+('Maria', 'Cabrera', (SELECT departamento_id FROM departamentos WHERE nombre='RRHH' LIMIT 1),
+                    (SELECT cargo_id FROM cargos WHERE nombre='Asistente' LIMIT 1),
+                    '2020-05-02'),
+('Pedro', 'Martinez', (SELECT departamento_id FROM departamentos WHERE nombre='Marketing' LIMIT 1),
+                     (SELECT cargo_id FROM cargos WHERE nombre='Supervisor' LIMIT 1),
+                     '2021-11-15');
