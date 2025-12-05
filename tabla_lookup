@@ -1,6 +1,7 @@
 -- 01_lookups.sql
 CREATE DATABASE IF NOT EXISTS rrhh_permisos;
 USE rrhh_permisos;
+#IF NOT EXISTS sirve para evitar un error si la base de datos ya existe#######
 
 -- Departamentos
 CREATE TABLE IF NOT EXISTS departamentos (
